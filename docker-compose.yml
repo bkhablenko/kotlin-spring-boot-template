@@ -1,0 +1,53 @@
+version: '3.9'
+services:
+  app:
+    image: github.com/bkhablenko/kotlin-spring-boot-template:${CIRCLE_SHA1:-latest}
+    build:
+      context: .
+    environment:
+      DB_HOST: postgres
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4317
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      jaeger:
+        condition: service_started
+
+  postgres:
+    image: postgres:15.3-alpine
+    environment:
+      POSTGRES_DB: kotlin-spring-boot-template
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgresql/data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U root -d kotlin-spring-boot-template"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.45
+    environment:
+      COLLECTOR_OTLP_ENABLED: true
+    ports:
+      - "4317:4317"
+      - "16686:16686"
+
+  # https://github.com/Redocly/redoc
+  redoc:
+    image: redocly/redoc:v2.0.0
+    environment:
+      SPEC_URL: openapi.yaml
+      REDOC_OPTIONS: >-
+        expand-responses="200"
+        json-sample-expand-level="3"
+    volumes:
+      - ./openapi.yaml:/usr/share/nginx/html/openapi.yaml
+    ports:
+      - "8090:80"

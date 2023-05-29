@@ -1,0 +1,36 @@
+openapi: 3.1.0
+info:
+  title: kotlin-spring-boot-template
+  version: v1
+  contact:
+    name: Bohdan Khablenko
+    url: https://github.com/bkhablenko
+    email: 8275828+bkhablenko@users.noreply.github.com
+  license:
+    name: The MIT License
+    identifier: MIT
+  description: |
+    ## Authentication
+
+    Users may authenticate with _any_ username as long as they provide an empty password.
+
+    **NOTE:** For demonstration purposes only.
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+paths: {}
+
+components:
+  securitySchemes:
+    basicAuth:
+      description: |
+        See [Authentication](#section/Authentication) for details.
+      type: http
+      scheme: basic
+
+  schemas: {}
+
+  responses:
+    ErrorResponse:
+      description: Something went awfully wrong.

@@ -1,0 +1,38 @@
+logging:
+  level:
+    com.github.bkhablenko: debug
+    web: debug
+
+# Spring Boot Actuator
+management:
+  endpoints:
+    enabled-by-default: false
+    web:
+      base-path: /
+      exposure:
+        include: health, prometheus
+      path-mapping:
+        prometheus: metrics
+  endpoint:
+    health:
+      enabled: true
+    prometheus:
+      enabled: true
+
+spring:
+  application:
+    name: kotlin-spring-boot-template
+
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:kotlin-spring-boot-template}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:password}
+    hikari:
+      connection-timeout: 15000
+      leak-detection-threshold: 10000
+      maximum-pool-size: 15
+
+  # Disable the warning (JpaBaseConfiguration$JpaWebConfiguration)
+  # https://www.baeldung.com/spring-open-session-in-view
+  jpa:
+    open-in-view: false

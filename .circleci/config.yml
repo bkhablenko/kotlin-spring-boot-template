@@ -1,0 +1,67 @@
+version: 2.1
+
+commands:
+  restore_gradle_cache:
+    steps:
+      - restore_cache:
+          keys:
+            - v1-gradle-caches-{{ checksum "build.gradle.kts" }}
+            - v1-gradle-caches-
+      - restore_cache:
+          keys:
+            - v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+            - v1-gradle-wrapper-
+  save_gradle_cache:
+    steps:
+      - save_cache:
+          key: v1-gradle-caches-{{ checksum "build.gradle.kts" }}
+          paths:
+            - ~/.gradle/caches
+      - save_cache:
+          key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+          paths:
+            - ~/.gradle/wrapper
+
+jobs:
+  build:
+    environment:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+    docker:
+      - image: cimg/openjdk:17.0
+      - image: cimg/postgres:15.3
+        environment:
+          POSTGRES_DB: kotlin-spring-boot-template
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_gradle_cache
+      - run: ./gradlew clean build
+      - store_test_results:
+          path: build/test-results/test
+      - save_gradle_cache
+      - persist_to_workspace:
+          root: .
+          paths:
+            - build/libs
+            - docker-compose.yml
+            - Dockerfile
+  docker:
+    docker:
+      - image: cimg/base:2023.05
+    steps:
+      - attach_workspace:
+          at: .
+      - setup_remote_docker
+      - run:
+          name: Build Docker image
+          command: |
+            docker compose build app --no-cache
+
+workflows:
+  main:
+    jobs:
+      - build
+      - docker:
+          requires:
+            - build
