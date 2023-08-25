@@ -45,6 +45,7 @@ jobs:
           paths:
             - build/libs
             - docker-compose.yml
+            - docker-entrypoint.sh
             - Dockerfile
   docker:
     docker:
