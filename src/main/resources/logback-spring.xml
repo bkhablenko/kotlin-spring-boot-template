@@ -1,44 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="true">
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
-            <providers>
-                <uuid>
-                    <fieldName>id</fieldName>
-                </uuid>
-                <timestamp>
-                    <fieldName>timestamp</fieldName>
-                    <timeZone>UTC</timeZone>
-                </timestamp>
-                <loggerName>
-                    <shortenedLoggerNameLength>25</shortenedLoggerNameLength>
-                </loggerName>
-                <logLevel>
-                    <fieldName>logger_level</fieldName>
-                </logLevel>
-                <threadName/>
-                <message/>
-                <stackTrace>
-                    <throwableConverter class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">
-                        <maxDepthPerThrowable>15</maxDepthPerThrowable>
-                        <maxLength>4096</maxLength>
-                        <shortenedClassNameLength>25</shortenedClassNameLength>
-                        <exclude>^sun\.reflect\..*\.invoke</exclude>
-                        <exclude>^net\.sf\.cglib\.proxy\.MethodProxy\.invoke</exclude>
-                        <rootCauseFirst>true</rootCauseFirst>
-                    </throwableConverter>
-                </stackTrace>
-                <nestedField>
-                    <fieldName>mdc</fieldName>
+
+    <if condition='property("LOG_FORMAT").toLowerCase().equals("json")'>
+        <then>
+            <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+                <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
                     <providers>
-                        <mdc/>
+                        <uuid>
+                            <fieldName>id</fieldName>
+                        </uuid>
+                        <timestamp>
+                            <fieldName>timestamp</fieldName>
+                            <timeZone>UTC</timeZone>
+                        </timestamp>
+                        <loggerName>
+                            <shortenedLoggerNameLength>25</shortenedLoggerNameLength>
+                        </loggerName>
+                        <logLevel>
+                            <fieldName>logger_level</fieldName>
+                        </logLevel>
+                        <threadName/>
+                        <message/>
+                        <stackTrace>
+                            <throwableConverter class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">
+                                <maxDepthPerThrowable>15</maxDepthPerThrowable>
+                                <maxLength>4096</maxLength>
+                                <shortenedClassNameLength>25</shortenedClassNameLength>
+                                <exclude>^sun\.reflect\..*\.invoke</exclude>
+                                <exclude>^net\.sf\.cglib\.proxy\.MethodProxy\.invoke</exclude>
+                                <rootCauseFirst>true</rootCauseFirst>
+                            </throwableConverter>
+                        </stackTrace>
+                        <nestedField>
+                            <fieldName>mdc</fieldName>
+                            <providers>
+                                <mdc/>
+                            </providers>
+                        </nestedField>
                     </providers>
-                </nestedField>
-            </providers>
-        </encoder>
-    </appender>
+                </encoder>
+            </appender>
+        </then>
+        <else>
+            <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+        </else>
+    </if>
+
+    <property name="LOG_FILE" value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}/spring.log}"/>
+    <include resource="org/springframework/boot/logging/logback/file-appender.xml"/>
+
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
     </root>
 </configuration>

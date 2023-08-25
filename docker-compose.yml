@@ -2,10 +2,12 @@ version: '3.9'
 services:
   app:
     image: github.com/bkhablenko/kotlin-spring-boot-template:${CIRCLE_SHA1:-latest}
+    platform: linux/amd64
     build:
       context: .
     environment:
       DB_HOST: postgres
+      LOG_FORMAT: json
       OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4317
     ports:
       - "8080:8080"
@@ -17,6 +19,7 @@ services:
 
   postgres:
     image: postgres:15.4-alpine
+    command: ["postgres", "-c", "log_statement=all"]
     environment:
       POSTGRES_DB: kotlin-spring-boot-template
       POSTGRES_USER: root

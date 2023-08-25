@@ -1,3 +1,4 @@
+import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.gradle.api.tasks.wrapper.Wrapper.DistributionType
 
 plugins {
@@ -31,6 +32,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("com.fasterxml.uuid:java-uuid-generator:4.2.0")
     implementation("net.logstash.logback:logstash-logback-encoder:7.4")
+    implementation("org.codehaus.janino:janino")
     implementation("org.flywaydb:flyway-core")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
@@ -51,6 +53,9 @@ tasks {
     }
     test {
         useJUnitPlatform()
+        testLogging {
+            events = setOf(TestLogEvent.SKIPPED, TestLogEvent.FAILED)
+        }
     }
     wrapper {
         distributionType = DistributionType.ALL
