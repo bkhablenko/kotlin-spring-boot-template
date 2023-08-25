@@ -16,7 +16,7 @@ services:
         condition: service_started
 
   postgres:
-    image: postgres:15.3-alpine
+    image: postgres:15.4-alpine
     environment:
       POSTGRES_DB: kotlin-spring-boot-template
       POSTGRES_USER: root
@@ -32,7 +32,7 @@ services:
       retries: 5
 
   jaeger:
-    image: jaegertracing/all-in-one:1.45
+    image: jaegertracing/all-in-one:1.48
     environment:
       COLLECTOR_OTLP_ENABLED: true
     ports:
@@ -41,7 +41,7 @@ services:
 
   # https://github.com/Redocly/redoc
   redoc:
-    image: redocly/redoc:v2.0.0
+    image: redocly/redoc:v2.1.1
     environment:
       SPEC_URL: openapi.yaml
       REDOC_OPTIONS: >-
