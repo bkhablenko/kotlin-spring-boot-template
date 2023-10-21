@@ -2,7 +2,7 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.gradle.api.tasks.wrapper.Wrapper.DistributionType
 
 plugins {
-    id("org.springframework.boot") version "3.1.3"
+    id("org.springframework.boot") version "3.1.5"
     id("io.spring.dependency-management") version "1.1.3"
     kotlin("jvm") version "1.9.10"
     kotlin("plugin.spring") version "1.9.10"
@@ -30,7 +30,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("com.fasterxml.uuid:java-uuid-generator:4.2.0")
+    implementation("com.fasterxml.uuid:java-uuid-generator:4.3.0")
     implementation("net.logstash.logback:logstash-logback-encoder:7.4")
     implementation("org.codehaus.janino:janino")
     implementation("org.flywaydb:flyway-core")
@@ -59,6 +59,6 @@ tasks {
     }
     wrapper {
         distributionType = DistributionType.ALL
-        gradleVersion = "8.3"
+        gradleVersion = "8.4"
     }
 }
