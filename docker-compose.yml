@@ -1,4 +1,3 @@
-version: '3.9'
 services:
   app:
     image: github.com/bkhablenko/kotlin-spring-boot-template:${CIRCLE_SHA1:-latest}
@@ -7,7 +6,7 @@ services:
       context: .
     environment:
       DB_HOST: postgres
-      LOG_FORMAT: json
+      LOGGING_STRUCTURED_FORMAT_CONSOLE: ecs
       OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4317
     ports:
       - "8080:8080"
