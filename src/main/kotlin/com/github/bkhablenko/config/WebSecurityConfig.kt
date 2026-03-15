@@ -1,6 +1,5 @@
 package com.github.bkhablenko.config
 
-import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
@@ -27,7 +26,7 @@ class WebSecurityConfig : WebMvcConfigurer {
     fun securityFilterChain(httpSecurity: HttpSecurity): SecurityFilterChain {
         httpSecurity {
             csrf { disable() }
-            authorizeRequests {
+            authorizeHttpRequests {
                 authorize(anyRequest, permitAll)
             }
             httpBasic {}

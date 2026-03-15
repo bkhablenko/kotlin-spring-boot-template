@@ -27,7 +27,7 @@ jobs:
     environment:
       GRADLE_OPTS: -Dorg.gradle.daemon=false
     docker:
-      - image: cimg/openjdk:17.0
+      - image: cimg/openjdk:21.0
       - image: cimg/postgres:15.3
         environment:
           POSTGRES_DB: kotlin-spring-boot-template
@@ -49,7 +49,7 @@ jobs:
             - Dockerfile
   docker:
     docker:
-      - image: cimg/base:2023.05
+      - image: cimg/base:2026.03
     steps:
       - attach_workspace:
           at: .
