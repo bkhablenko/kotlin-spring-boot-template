@@ -3,6 +3,9 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
 import org.gradle.api.tasks.wrapper.Wrapper.DistributionType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
+// https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+val mockitoAgent: Configuration = configurations.create("mockitoAgent")
+
 plugins {
     id("org.springframework.boot") version "4.0.2"
     id("io.spring.dependency-management") version "1.1.7"
@@ -25,6 +28,8 @@ repositories {
 }
 
 dependencies {
+    mockitoAgent("org.mockito:mockito-core") { isTransitive = false }
+
     // Spring Boot
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -79,6 +84,12 @@ allOpen {
 
 tasks {
     test {
+        jvmArgs = listOf(
+            "-javaagent:${mockitoAgent.asPath}",
+            "-Dspring.profiles.active=test",
+            "-Duser.timezone=UTC",
+            "-Xshare:off",
+        )
         useJUnitPlatform()
         testLogging {
             events(SKIPPED, FAILED)

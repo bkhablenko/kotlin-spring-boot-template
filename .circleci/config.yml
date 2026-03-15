@@ -28,11 +28,6 @@ jobs:
       GRADLE_OPTS: -Dorg.gradle.daemon=false
     docker:
       - image: cimg/openjdk:21.0
-      - image: cimg/postgres:18.1
-        environment:
-          POSTGRES_DB: kotlin-spring-boot-template
-          POSTGRES_USER: root
-          POSTGRES_PASSWORD: password
     steps:
       - checkout
       - restore_gradle_cache
