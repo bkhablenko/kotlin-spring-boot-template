@@ -1,26 +1,7 @@
 version: 2.1
 
-commands:
-  restore_gradle_cache:
-    steps:
-      - restore_cache:
-          keys:
-            - v1-gradle-caches-{{ checksum "build.gradle.kts" }}
-            - v1-gradle-caches-
-      - restore_cache:
-          keys:
-            - v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
-            - v1-gradle-wrapper-
-  save_gradle_cache:
-    steps:
-      - save_cache:
-          key: v1-gradle-caches-{{ checksum "build.gradle.kts" }}
-          paths:
-            - ~/.gradle/caches
-      - save_cache:
-          key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
-          paths:
-            - ~/.gradle/wrapper
+orbs:
+  gradle: circleci/gradle@4.1.0
 
 jobs:
   build:
@@ -30,11 +11,11 @@ jobs:
       image: ubuntu-2404:2025.09.1
     steps:
       - checkout
-      - restore_gradle_cache
-      - run: ./gradlew clean build
+      - gradle/with_cache:
+          steps:
+            - run: ./gradlew clean build
       - store_test_results:
           path: build/test-results/test
-      - save_gradle_cache
       - persist_to_workspace:
           root: .
           paths:
