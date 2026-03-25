@@ -96,7 +96,6 @@ tasks {
         }
     }
     wrapper {
-        distributionType = DistributionType.ALL
-        gradleVersion = "9.3.1"
+        gradleVersion = "9.4.1"
     }
 }
