@@ -1,12 +1,13 @@
 import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
 import org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
-import org.gradle.api.tasks.wrapper.Wrapper.DistributionType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 // https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
 val mockitoAgent: Configuration = configurations.create("mockitoAgent")
 
 plugins {
+    id("com.github.ben-manes.versions") version "0.53.0"
+
     id("org.springframework.boot") version "4.0.2"
     id("io.spring.dependency-management") version "1.1.7"
     kotlin("jvm") version "2.2.21"
@@ -83,6 +84,10 @@ allOpen {
 }
 
 tasks {
+    dependencyUpdates {
+        gradleReleaseChannel = "current"
+        revision = "release"
+    }
     test {
         jvmArgs = listOf(
             "-javaagent:${mockitoAgent.asPath}",
