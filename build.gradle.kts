@@ -84,6 +84,9 @@ allOpen {
 }
 
 tasks {
+    bootJar {
+        archiveFileName = "${project.name}.jar"
+    }
     dependencyUpdates {
         gradleReleaseChannel = "current"
         revision = "release"

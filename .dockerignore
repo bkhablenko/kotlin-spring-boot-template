@@ -1,0 +1,3 @@
+*
+!build/libs/kotlin-spring-boot-template.jar
+!docker-entrypoint.sh

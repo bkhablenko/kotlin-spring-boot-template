@@ -1,8 +1,9 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
-java \
+exec java \
   -javaagent:/opentelemetry-javaagent.jar \
   -Duser.timezone=UTC \
-  -Xms1g \
-  -Xmx4g \
-  -jar /app.jar
+  -XX:+ExitOnOutOfMemoryError \
+  -XX:MaxRAMPercentage=75.0 \
+  -XX:InitialRAMPercentage=50.0 \
+  -jar /app/kotlin-spring-boot-template.jar "$@"
