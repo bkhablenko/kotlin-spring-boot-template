@@ -42,7 +42,7 @@ dependencies {
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     developmentOnly("org.springframework.boot:spring-boot-docker-compose")
 
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin") // Hibernate still needs Jackson 2
     implementation("com.fasterxml.uuid:java-uuid-generator:5.2.0")
     implementation("io.github.oshai:kotlin-logging:8.0.01")
     implementation("io.hypersistence:hypersistence-utils-hibernate-71:3.15.2")

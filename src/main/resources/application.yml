@@ -16,6 +16,10 @@ management:
     health:
       probes:
         enabled: true
+  otlp:
+    metrics:
+      export:
+        enabled: false
 
 spring:
   application:

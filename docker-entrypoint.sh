@@ -1,7 +1,6 @@
 #!/usr/bin/env sh
 
 exec java \
-  -javaagent:/opentelemetry-javaagent.jar \
   -Duser.timezone=UTC \
   -XX:+ExitOnOutOfMemoryError \
   -XX:MaxRAMPercentage=75.0 \
