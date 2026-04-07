@@ -38,6 +38,9 @@ spring:
       leak-detection-threshold: 10000
       maximum-pool-size: 15
 
+  flyway:
+    locations: ${FLYWAY_LOCATIONS:classpath:db/migration/common,classpath:db/migration/dev}
+
   jpa:
     open-in-view: false
     properties:
