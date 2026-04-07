@@ -13,6 +13,10 @@ plugins {
     kotlin("jvm") version "2.3.20"
     kotlin("plugin.spring") version "2.3.20"
     kotlin("plugin.jpa") version "2.3.20"
+
+    // Must declare after Spring Boot plugin.
+    // See: https://github.com/springdoc/springdoc-openapi-gradle-plugin/issues/121
+    id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
 }
 
 group = "com.github.bkhablenko"
@@ -48,6 +52,7 @@ dependencies {
     implementation("io.hypersistence:hypersistence-utils-hibernate-71:3.15.2")
     implementation("org.flywaydb:flyway-database-postgresql")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.2")
     implementation("tools.jackson.module:jackson-module-kotlin")
 
     runtimeOnly("io.micrometer:micrometer-registry-prometheus")
@@ -81,6 +86,16 @@ allOpen {
     annotation("jakarta.persistence.Embeddable")
     annotation("jakarta.persistence.Entity")
     annotation("jakarta.persistence.MappedSuperclass")
+}
+
+openApi {
+    apiDocsUrl = "http://localhost:9080/actuator/openapi"
+    customBootRun {
+        jvmArgs = listOf("-Duser.timezone=UTC")
+
+        // https://github.com/springdoc/springdoc-openapi-gradle-plugin/issues/150
+        systemProperties = mapOf("spring.docker.compose.file" to projectDir.resolve("compose.yaml"))
+    }
 }
 
 tasks {

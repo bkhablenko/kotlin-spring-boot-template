@@ -28,15 +28,3 @@ services:
       timeout: 3s
       retries: 5
 
-  # https://github.com/Redocly/redoc
-  redoc:
-    image: redocly/redoc:v2.1.1
-    environment:
-      SPEC_URL: openapi.yaml
-      REDOC_OPTIONS: >-
-        expand-responses="200"
-        json-sample-expand-level="3"
-    volumes:
-      - ./openapi.yaml:/usr/share/nginx/html/openapi.yaml
-    ports:
-      - "8090:80"

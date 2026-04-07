@@ -5,10 +5,20 @@
 ## How to run
 
 ```bash
-./gradlew clean build -x test && docker compose up --build
+./gradlew bootRun
 ```
 
-API documentation will be available at http://localhost:8090.
+API documentation will be available at http://localhost:9080/actuator/swagger-ui.
+
+## Generating OpenAPI Specification
+
+To generate the specification without starting the app, run:
+
+```bash
+./gradlew generateOpenApiDocs --no-configuration-cache
+```
+
+The generated file will be available in the [`./build`](./build/openapi.json) directory.
 
 ## License
 
