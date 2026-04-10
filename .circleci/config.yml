@@ -19,8 +19,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - build/libs
-            - compose.yaml
+            - build/libs/kotlin-spring-boot-template.jar
             - docker-entrypoint.sh
             - Dockerfile
   docker:
@@ -33,7 +32,7 @@ jobs:
       - run:
           name: Build Docker image
           command: |
-            docker compose build app --no-cache
+            docker build --no-cache -t "github.com/bkhablenko/kotlin-spring-boot-template:${CIRCLE_SHA1:-latest}" .
 
 workflows:
   main:
